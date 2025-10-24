@@ -37,7 +37,7 @@ function HalfMoon() {
       />
       <pointLight
         ref={light}
-        position={[2, 1.5, 2]}
+        position={[2, 1, 2]}
         intensity={1.3}
         color="#f6d365"
       />
@@ -48,15 +48,15 @@ function HalfMoon() {
 export default function MoonScene() {
   return (
     <Canvas
-      camera={{ position: [0, 0.8, 8], fov: 40 }}
-      className="fixed inset-0 -z-10 w-full h-full pointer-events-none"
+      camera={{ position: [0, 0, 9], fov: 45 }}
+      className="h-screen w-full"
     >
       <color attach="background" args={["#0b1020"]} />
       <ambientLight intensity={0.4} />
       <directionalLight position={[3, 4, 5]} intensity={0.7} color="#ffdca8" />
 
       <HalfMoon />
-      <Sparkles size={5} scale={8} count={60} speed={0.3} color="#f6d365" />
+      <Sparkles size={5} scale={10} count={140} speed={0.5} color="#f6d365" />
 
       <OrbitControls
         enablePan={false}

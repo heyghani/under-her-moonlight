@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import Hero from "../components/Hero";
 import MusicPlayer from "../components/MusicPlayer";
 import MoonlitMemories from "../components/MoonlitMemories";
+import SparklesBackground from "../components/SparklesBackground";
 import { motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
@@ -12,6 +13,7 @@ const MoonScene = dynamic(() => import("../components/MoonScene"), {
 
 export default function Home() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const messageRef = useRef<HTMLElement | null>(null);
   const [mounted, setMounted] = useState(false);
   const heroRef = useRef(null);
   const isHeroInView = useInView(heroRef, { amount: 0.4 });
@@ -48,34 +50,28 @@ export default function Home() {
     } catch (e) {}
   };
 
+  const scrollToMessage = (offset = 24) => {
+    if (!messageRef.current) return;
+    // compute absolute top and apply offset so the section sits nicely below any fixed elements
+    const top =
+      messageRef.current.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top, behavior: "smooth" });
+  };
+
   return (
-    <main className="min-h-screen w-full relative overflow- bg-[#0b1020]">
-      <MusicPlayer
-        audioRef={audioRef}
-        toggle={() => toggle()}
-        playing={playing}
-      />
-
-      {/* Conditionally show the moon */}
-
-      {mounted && (
-        <motion.div
-          className="fixed inset-0 -z-10 overflow-visible pointer-events-none"
-          animate={{ opacity: showMoon ? 1 : 0 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-        >
-          <MoonScene />
-        </motion.div>
-      )}
-
-      <div className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.07),transparent_70%)] pointer-events-none" />
+    <main className="min-h-screen w-full relative overflow-hidden">
+      <MusicPlayer audioRef={audioRef} toggle={toggle} playing={playing} />
+      <div className="fixed inset-0 -z-10">
+        <MoonScene />
+      </div>
 
       <div className="relative z-10">
-        <div ref={heroRef}>
-          <Hero name="HEROINEE" audioRef={audioRef} />
-        </div>
+        <Hero name="HEROINEE" audioRef={audioRef} onExplore={scrollToMessage} />
 
-        <section className="max-w-md sm:max-w-2xl mx-auto mt-24 px-5 sm:px-6">
+        <section
+          ref={messageRef}
+          className="max-w-md sm:max-w-2xl mx-auto mt-24 px-5 sm:px-6"
+        >
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -105,7 +101,6 @@ So here’s to you, HEROINEE — the girl who turns dreams into gold\nand makes 
           </motion.div>
         </section>
       </div>
-
       <MoonlitMemories />
     </main>
   );

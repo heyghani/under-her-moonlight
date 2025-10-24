@@ -10,12 +10,11 @@ export default function MoonlitMemories() {
     offset: ["start end", "end start"],
   });
 
-  // Different parallax offsets for each image
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, -60]);
   const y2 = useTransform(scrollYProgress, [0, 1], [0, -80]);
-  const y3 = useTransform(scrollYProgress, [0, 1], [0, -30]);
-  const y4 = useTransform(scrollYProgress, [0, 1], [0, -60]);
-  const y5 = useTransform(scrollYProgress, [0, 1], [0, -40]);
+  const y3 = useTransform(scrollYProgress, [0, 1], [0, -40]);
+  const y4 = useTransform(scrollYProgress, [0, 1], [0, -70]);
+  const y5 = useTransform(scrollYProgress, [0, 1], [0, -50]);
 
   const photos = [
     { id: 1, src: "/images/photo1.jpeg", y: y1, delay: 0 },
@@ -28,49 +27,50 @@ export default function MoonlitMemories() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden py-20 sm:py-32"
+      className="relative w-full min-h-[160vh] sm:min-h-[200vh] flex flex-col items-center justify-center overflow-hidden p-14 sm:p-20"
     >
-      {/* Subtle starry background layer */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.08),transparent_70%)] pointer-events-none" />
+      {/* Background stars */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.05),transparent_70%)] pointer-events-none" />
 
       <motion.h2
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.2 }}
         viewport={{ once: true }}
-        className="text-center text-2xl sm:text-3xl font-serif text-yellow-200 mb-8 sm:mb-12"
+        className="text-center text-2xl sm:text-3xl font-serif text-yellow-200 mb-16 sm:mb-24"
       >
         Moonlit Memories ✨
       </motion.h2>
 
-      <div className="relative w-full max-w-md sm:max-w-3xl h-[500px] sm:h-[600px] mx-auto">
+      {/* Zigzag layout */}
+      <div className="relative w-full max-w-lg sm:max-w-3xl mx-auto flex flex-col gap-7">
         {photos.map((photo, i) => (
-          <motion.img
+          <motion.div
             key={photo.id}
-            src={photo.src}
-            alt={`Memory ${photo.id}`}
+            className={`relative w-full flex ${
+              i % 2 === 0 ? "justify-start" : "justify-end"
+            }`}
             style={{ y: photo.y }}
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{
-              duration: 1.5,
-              delay: photo.delay,
-              ease: "easeOut",
-            }}
-            viewport={{ once: true }}
-            className={`absolute rounded-2xl shadow-[0_0_25px_rgba(246,211,101,0.3)] border border-white/10 object-cover
-              ${
-                [
-                  "top-0 left-[10%] w-36 sm:w-56",
-                  "top-[20%] right-[5%] w-40 sm:w-60",
-                  "top-[45%] left-[15%] w-32 sm:w-52",
-                  "bottom-[10%] right-[20%] w-36 sm:w-56",
-                  "bottom-0 left-[30%] w-40 sm:w-60",
-                ][i]
-              }`}
-          />
+          >
+            <motion.img
+              src={photo.src}
+              alt={`Memory ${photo.id}`}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{
+                duration: 1.4,
+                delay: photo.delay,
+                ease: "easeOut",
+              }}
+              viewport={{ once: true }}
+              className="w-40 sm:w-60 rounded-3xl shadow-[0_0_25px_rgba(246,211,101,0.3)] border border-white/10 object-cover"
+            />
+          </motion.div>
         ))}
       </div>
+
+      {/* Subtle glow behind all */}
+      <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-[60%] bg-[radial-gradient(circle,rgba(246,211,101,0.1),transparent_70%)] blur-3xl pointer-events-none" />
     </section>
   );
 }

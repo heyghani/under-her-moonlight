@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 
-export default function Hero({ name = "HEROINEE", audioRef }) {
+export default function Hero({ name = "HEROINEE", audioRef, onExplore }) {
   const handleExplore = () => {
     if (audioRef.current) {
       audioRef.current.play().catch(() => {
@@ -10,18 +10,16 @@ export default function Hero({ name = "HEROINEE", audioRef }) {
     }
   };
   return (
-    <section className="relative h-[120vh] flex flex-col items-center justify-center min-h-screen text-center overflow-hidden">
-      {/* Background lienar – moonlight fade */}
-      <div className="absolute inset-0 bg-linear-to-b from-[#030417] via-[#0b1020] to-[#f6e7b3]/80" />
+    <section className="relative flex flex-col items-center justify-center min-h-screen text-center overflow-visible">
+      <div className="absolute inset-0 bg-linear-to-b from-[#030417] via-[#0b1020]" />
 
-      {/* Soft moon glow overlay */}
-      <div className="absolute bottom-[-10%] w-[160%] h-[80%] rounded-[50%] bg-linear-to-t from-[#f6d365]/80 to-transparent blur-3xl opacity-60" />
+      {/* <div className="absolute bottom-[-10%] w-[160%] h-[80%] rounded-[50%] bg-linear-to-t from-[#f6d365]/80 to-transparent blur-3xl opacity-60" /> */}
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
-        className="relative z-10 px-5 max-w-sm sm:max-w-md"
+        className="relative px-5 max-w-sm sm:max-w-md"
       >
         <motion.h1
           initial={{ opacity: 0, y: 15 }}
@@ -70,7 +68,7 @@ export default function Hero({ name = "HEROINEE", audioRef }) {
             transition={{ repeat: Infinity, duration: 3 }}
             className="relative inline-flex items-center gap-2 px-6 py-2 rounded-full bg-linear-to-r from-yellow-300 via-pink-300 to-pink-500 text-black font-semibold shadow-md"
             onClick={() => {
-              window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
+              onExplore?.();
               handleExplore();
             }}
           >
