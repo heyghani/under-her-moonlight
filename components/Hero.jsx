@@ -45,7 +45,7 @@ export default function Hero({ name = "HEROINEE", audioRef, onExplore }) {
           transition={{ duration: 1, delay: 1.3 }}
           className="mt-5 text-base sm:text-lg leading-relaxed text-white/90 drop-shadow-[0_0_6px_rgba(0,0,0,0.4)]"
         >
-          To the girl who loves the moon and all its magic — step into this
+          To the woman who loves the moon and all its magic — step into this
           little world made just for you.
         </motion.p>
 
